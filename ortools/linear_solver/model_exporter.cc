@@ -286,15 +286,15 @@ absl::StatusOr<std::string> ExportModelAsMpsFormat(
   return output.str();
 }
 
-absl::Status<bool> WriteModelAsLpFormat(
+bool WriteModelAsLpFormat(
   const MPModelProto& model,
-  const std::string file_path,
+  const std::string& file_path,
   const MPModelExportOptions& options) {
   for (const MPGeneralConstraintProto& general_constraint :
        model.general_constraint()) {
     if (!general_constraint.has_indicator_constraint()) {
-      return absl::InvalidArgumentError(
-          "Non-indicator general constraints are not supported.");
+      std::cerr << "Non-indicator general constraints are not supported.";
+      return false;
     }
   }
 
@@ -302,19 +302,23 @@ absl::Status<bool> WriteModelAsLpFormat(
     GzFileWrapper out(file_path, "wb");
     std::ostream output(&out);
     MPModelProtoExporter exporter(model);
-    return exporter.ExportModelAsLpFormat(options, output);
+    if (exporter.ExportModelAsLpFormat(options, output)) {
+      return true;
+    }
   } catch (const std::runtime_error& e) {
     std::cerr << "Error: " << e.what() << std::endl;
   }
 
-  return absl::InvalidArgumentError("Unable to export model.");
+  std::cerr << "Unable to export model.";
+  return false;
 }
 
-absl::Status<bool> WriteModelAsMpsFormat(
+bool WriteModelAsMpsFormat(
   const MPModelProto& model,
-  const std::string file_path,
+  const std::string& file_path,
   const MPModelExportOptions& options) {
   if (model.general_constraint_size() > 0) {
+    std::cerr << "General constraints are not supported.";
     return false;
   }
 
@@ -322,12 +326,15 @@ absl::Status<bool> WriteModelAsMpsFormat(
     GzFileWrapper out(file_path, "wb");
     std::ostream output(&out);
     MPModelProtoExporter exporter(model);
-    return exporter.ExportModelAsMpsFormat(options, output);
+    if (exporter.ExportModelAsMpsFormat(options, output)) {
+      return true;
+    }
   } catch (const std::runtime_error& e) {
     std::cerr << "Error: " << e.what() << std::endl;
   }
 
-  return absl::InvalidArgumentError("Unable to export model.");
+  std::cerr << "Unable to export model.";
+  return false;
 }
 
 namespace {

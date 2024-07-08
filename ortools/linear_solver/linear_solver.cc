@@ -1873,9 +1873,7 @@ bool MPSolver::WriteModelAsLpFormat(const std::string& file_path,
   ExportModelToProto(&proto);
   MPModelExportOptions options;
   options.obfuscate = obfuscate;
-  const auto status_or =
-    operations_research::WriteModelAsLpFormat(proto, file_path, options);
-  return status_or.ok();
+  return operations_research::WriteModelAsLpFormat(proto, file_path, options);
 }
 
 bool MPSolver::WriteModelAsMpsFormat(const std::string& file_path,
@@ -1885,9 +1883,7 @@ bool MPSolver::WriteModelAsMpsFormat(const std::string& file_path,
   ExportModelToProto(&proto);
   MPModelExportOptions options;
   options.obfuscate = obfuscate;
-  const auto status_or =
-    operations_research::WriteModelAsMpsFormat(proto, file_path, options);
-  return status_or.ok();
+  return operations_research::WriteModelAsMpsFormat(proto, file_path, options);
 }
 
 void MPSolver::SetHint(std::vector<std::pair<const MPVariable*, double>> hint) {

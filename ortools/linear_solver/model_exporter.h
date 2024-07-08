@@ -66,7 +66,7 @@ absl::StatusOr<std::string> ExportModelAsLpFormat(
     const MPModelProto& model,
     const MPModelExportOptions& options = MPModelExportOptions());
 
-absl::Status<bool> WriteModelAsLpFormat(
+bool WriteModelAsLpFormat(
     const MPModelProto& model,
     const std::string& file_path,
     const MPModelExportOptions& options = MPModelExportOptions());
@@ -100,7 +100,7 @@ absl::StatusOr<std::string> ExportModelAsMpsFormat(
     const MPModelProto& model,
     const MPModelExportOptions& options = MPModelExportOptions());
 
-absl::Status<bool> WriteModelAsMpsFormat(
+bool WriteModelAsMpsFormat(
   const MPModelProto& model,
   const std::string& file_path,
   const MPModelExportOptions& options = MPModelExportOptions());
